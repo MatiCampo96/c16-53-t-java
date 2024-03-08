@@ -64,143 +64,152 @@
                 <li><a href="sobrenosotros">Sobre Nosotros</a></li>
                 <li><a href="solicitudes" sec:authorize="hasRole('ROLE_ADMIN')">Solitudes de adopcion</a></li>
                 <div class="botones-container">
-                    <a class="ingresarheader" th:href="@{/login}" >Ingresar</a>
-                    <a class="registrarseheader" th:href="@{/registrar}" >Registrarse</a>
+                    <a class="ingresarheader" th:href="@{/login}">Ingresar</a>
+                    <a class="registrarseheader" th:href="@{/registrar}">Registrarse</a>
                     <a class="ingresarheader" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
                 </div>
             </ul>
         </nav>
-
         <div class="formulario">
-        <div class="media">
-            <div class="media-body">
-              <h5 class="mt-0 mb-1">Usted esta aplicando para la adopción de <strong>Manchitas</strong></h5>
-              <img class="ml-3" src="img/perro1.jpg" alt="Generic placeholder image">
-              Por favor, verifique que sus datos sean correctos y complete el formulario para iniciar el proceso de adopcion.
-              <br>
-              <div class="user-info">
-                <br>
-                <h6>Verificación de Datos para Adopción</h6>
-        
-                <p><strong>Nombre:</strong> Juan</p>
-                <p><strong>Apellido:</strong> Pérez</p>
-                <p><strong>Correo Electrónico:</strong> juan.perez@example.com</p>
-                    </div>            
-          </div>
+            <div class="media">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1">Usted esta aplicando para la adopción de <strong>Manchitas</strong></h5>
+                    <img class="ml-3" src="img/perro1.jpg" alt="Generic placeholder image">
+                    Por favor, verifique que sus datos sean correctos y complete el formulario para iniciar el proceso
+                    de adopcion.
+                    <br>
+                    <div class="user-info">
+                        <br>
+                        <h6>Verificación de Datos para Adopción</h6>
+
+                        <p ><strong>Nombre: </strong><span th:text="${name}"></span></p>
+                        <p><strong>Apellido: </strong><span th:text="${surname}"></span></p>
+                        <p><strong>Correo Electrónico: </strong><span th:text="${email}"></span></p>
+                        <h3 th:text="${message}"></h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="formulario">
+                <form action="/request" method="post">
+                    <h2>Ingrese sus datos</h2>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <input type="hidden" th:value="${user_id}" step="0.01" class="form-control" id="inputEmail3" name="user_id" hidden="true">
+                        </div>
+                        <div class="col-sm-10">
+                            <input type="hidden" th:value="${pet_id}" step="0.01" class="form-control" id="inputEmail3" name="pet_id" hidden="true">
+                        </div>
+                        <label for="salary" class="col-sm-2 col-form-label">Salario en pesos: </label>
+                        <div class="col-sm-10">
+                            <input type="number" th:value="${salary}" step="0.01" class="form-control" id="inputEmail3" name="salary"
+                                placeholder="salario">
+                        </div>
+                    </div>
+                    <br>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-8 pt-0">Compromiso de esterilizacion: </legend>
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="sterilizationCommitment"
+                                        id="gridRadios1" th:value="true" checked>
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Si
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="sterilizationCommitment"
+                                        id="gridRadios2" th:value="false">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                    </fieldset>
+                    <br>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-8 pt-0">Tipo de vivienda: </legend>
+                            <div class="col-sm-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="housingType" id="gridRadios1"
+                                        th:value="CASA" checked>
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Casa
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="housingType" id="gridRadios2"
+                                        th:value="APARTAMENTO">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        Apartamento
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="housingType" id="gridRadios2"
+                                        th:value="FINCA">
+                                    <label class="form-check-label" for="gridRadios2">
+                                        Finca
+                                    </label>
+                                </div>
+                            </div>
+                    </fieldset>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="gridCheck1">
+                                <label class="form-check-label" for="gridCheck1">
+                                    Acepto el compromiso y he sido honesto"
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary send">Enviar solicitud</button>
+                        </div>
+                    </div>
+            </div>
+            </section>
+
+
+            <footer>
+                <div class="footer">
+                    <div class="container">
+                        <div class="logo-container-footer">
+                            <img src="img/logo1.png" alt="logo patitas">
+                        </div>
+                        <div class="derechos">
+                            <p>&copy; ENCUENTRAME - Todos los derechos reservados</p>
+                        </div>
+                        <div class="contact-container">
+                            <h4>Contacto</h4>
+                            <p>Correo: nocountry@gmail.com</p>
+                            <p>Teléfono: (342) 155119142</p>
+                        </div>
+                        <div class="social-icons">
+                            <ul>
+                                <li><a href="#" target="_blank"><i
+                                            class="fa-brands fa-instagram fa-flip fa-2xl"></i></a>
+                                </li>
+                                <li><a href="#" target="_blank"><i
+                                            class="fa-brands fa-x-twitter fa-flip fa-2xl"></i></a>
+                                </li>
+                                <li><a href="#" target="_blank"><i class="fa-brands fa-facebook fa-flip fa-2xl"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+
+
         </div>
-
-        <div class="formulario">
-            <form action="#" method="post">
-                <h2>Ingrese sus datos</h2>
-                <div class="form-group row">
-                    <label for="salary" class="col-sm-2 col-form-label">Salario en pesos: </label>
-                    <div class="col-sm-10">
-                        <input type="number" step="0.01" class="form-control" id="inputEmail3" name="salary"
-                            placeholder="salario">
-                    </div>
-                </div>
-                <br>
-                <fieldset class="form-group">
-                    <div class="row">
-                        <legend class="col-form-label col-sm-8 pt-0">Compromiso de esterilizacion: </legend>
-                        <div class="col-sm-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sterilizationCommitment" id="gridRadios1"
-                                    value="option1" checked>
-                                <label class="form-check-label" for="gridRadios1">
-                                    Si
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sterilizationCommitment" id="gridRadios2"
-                                    value="option2">
-                                <label class="form-check-label" for="gridRadios2">
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                </fieldset>
-                <br>
-                <fieldset class="form-group">
-                    <div class="row">
-                        <legend class="col-form-label col-sm-8 pt-0">Tipo de vivienda: </legend>
-                        <div class="col-sm-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="houseType" id="gridRadios1"
-                                    value="CASA" checked>
-                                <label class="form-check-label" for="gridRadios1">
-                                    Casa
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="houseType" id="gridRadios2"
-                                    value="APARTAMENTO">
-                                <label class="form-check-label" for="gridRadios2">
-                                    Apartamento
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="houseType" id="gridRadios2"
-                                    value="FINCA">
-                                <label class="form-check-label" for="gridRadios2">
-                                    Finca
-                                </label>
-                            </div>
-                        </div>
-                </fieldset>
-                <br>
-                <div class="form-group row">
-                    <div class="col-sm-10">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="gridCheck1">
-                            <label class="form-check-label" for="gridCheck1">
-                                Acepto el compromiso y he sido honesto"
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="form-group row">
-                    <div class="col-sm-12">
-                        <button type="submit" class="btn btn-primary send">Enviar solicitud</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
-        <footer>
-            <div class="footer">
-                <div class="container">
-                    <div class="logo-container-footer">
-                        <img src="img/logo1.png" alt="logo patitas">
-                    </div>
-                    <div class="derechos">
-                        <p>&copy; ENCUENTRAME - Todos los derechos reservados</p>
-                    </div>
-                    <div class="contact-container">
-                        <h4>Contacto</h4>
-                        <p>Correo: nocountry@gmail.com</p>
-                        <p>Teléfono: (342) 155119142</p>
-                    </div>
-                    <div class="social-icons">
-                        <ul>
-                            <li><a href="#" target="_blank"><i class="fa-brands fa-instagram fa-flip fa-2xl"></i></a>
-                            </li>
-                            <li><a href="#" target="_blank"><i class="fa-brands fa-x-twitter fa-flip fa-2xl"></i></a>
-                            </li>
-                            <li><a href="#" target="_blank"><i class="fa-brands fa-facebook fa-flip fa-2xl"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
-
-
-    </div>
-    <!-- <script src="js/index.js"></script> -->
+        <!-- <script src="js/index.js"></script> -->
 </body>
 
 </html>

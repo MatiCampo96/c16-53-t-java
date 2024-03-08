@@ -139,17 +139,5 @@ public class HomeController {
     public String sobrenosotros() {
         return "sobrenosotros";
     }
-
-    @GetMapping("/request")
-    public String request() {
-        return "request";
-    }
-
-    @GetMapping("/solicitudes")
-    public String getSolicitudes(Model model) {
-        List<RequestAdoption> requestAdoptions = requestAdoptionRepository.findAll();
-        model.addAttribute("requestAdoptions", requestAdoptions);
-
-        return "solicitudes";
-    }
+    
 }

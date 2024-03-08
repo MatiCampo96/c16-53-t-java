@@ -1,20 +1,23 @@
 package com.encuentrame.project.encuentrame.controllers;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.encuentrame.project.encuentrame.entities.Article;
 import com.encuentrame.project.encuentrame.entities.MyUser;
-import com.encuentrame.project.encuentrame.entities.Pet;
 import com.encuentrame.project.encuentrame.entities.RequestAdoption;
+import com.encuentrame.project.encuentrame.enumerations.HousingType;
+import com.encuentrame.project.encuentrame.repositories.MyUserRepository;
 import com.encuentrame.project.encuentrame.repositories.RequestAdoptionRepository;
 import com.encuentrame.project.encuentrame.service.PetService;
 import com.encuentrame.project.encuentrame.services.RequestAdoptionImpl;
@@ -22,8 +25,6 @@ import com.encuentrame.project.encuentrame.services.RequestAdoptionImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -60,23 +61,12 @@ public class RequestAdoptionController {
         return requestAdoptionRepository.findById(id).map(requestAdoption -> new ResponseEntity<>(requestAdoption, HttpStatus.OK)) 
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND)); 
     } 
-  
-    @PostMapping("/api/requestAdoptions")
-    public ResponseEntity<RequestAdoption> createRequestAdoption(@RequestBody RequestAdoption requestAdoption) { 
-        RequestAdoption savedRequestAdoption = requestAdoptionServiceImpl.createRequestAdoption(
-            requestAdoption.getMyUser().getUser_id(),
-            requestAdoption.getPet().getPet_id(),
-            requestAdoption.getSalary(),
-            requestAdoption.getHousingType(),
-            requestAdoption.isSterilizationCommitment()
-        );
-        return new ResponseEntity<>(savedRequestAdoption, HttpStatus.CREATED);
-    }
 
     @Controller
 public class WebAdoptionController{
     @Autowired
      private UserDetailsService userDetailsService;
+     private final MyUserRepository myUserRepository;
 
      @Autowired
      private PetService petService;
@@ -88,8 +78,17 @@ public class WebAdoptionController{
     private RequestAdoptionRepository requestAdoptionRepository;
 
     @Autowired
-    public WebAdoptionController(RequestAdoptionRepository requestAdoptionRepository) {
+    public WebAdoptionController(RequestAdoptionRepository requestAdoptionRepository, MyUserRepository myUserRepository) {
+        this.myUserRepository = myUserRepository;
         this.requestAdoptionRepository = requestAdoptionRepository;
+    }
+
+    @GetMapping("/solicitudes")
+    public String getSolicitudes(Model model) {
+        List<RequestAdoption> requestAdoptions = requestAdoptionRepository.findAll();
+        model.addAttribute("requestAdoptions", requestAdoptions);
+
+        return "solicitudes";
     }
 
     @PostMapping("/solicitudes/deny")
@@ -122,6 +121,47 @@ public class WebAdoptionController{
         // Redirige a la página que deseas recargar
         return "redirect:/solicitudes";
     }
+
+    @GetMapping("/request")
+    public String request(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+        System.out.println(email);
+        MyUser myUser = myUserRepository.findByEmail(email);
+        model.addAttribute("user_id", myUser.getUser_id());
+        model.addAttribute("name", myUser.getName());
+        model.addAttribute("surname", myUser.getSurname());
+        model.addAttribute("email", myUser.getEmail());
+       // model.addAttribute("myUser", myUser);
+        return "request";
+    }
+
+    @PostMapping("/request")
+    public String createRequestAdoption(
+            @RequestParam("user_id") UUID userId,
+            @RequestParam("pet_id") UUID petId,
+            @RequestParam("salary") double salary,
+            @RequestParam("housingType") HousingType housingType,
+            @RequestParam("sterilizationCommitment") boolean sterilizationCommitment,
+            Model model) {
+    
+        RequestAdoption savedRequestAdoption = requestAdoptionServiceImpl.createRequestAdoption(
+                userId,
+                petId,
+                salary,
+                housingType,
+                sterilizationCommitment
+        );
+    
+        // Realiza cualquier lógica adicional necesaria
+    
+        // Agrega el mensaje de éxito al modelo
+        model.addAttribute("message", "Solicitud de adopción creada exitosamente");
+    
+        // Devuelve el nombre de la vista que mostrará el mensaje
+        return "request";  // Cambia esto según el nombre de tu vista
+    }    
 
 }
 
