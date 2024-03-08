@@ -93,6 +93,7 @@ public class RequestAdoptionImpl implements RequestAdoptionService {
                 });
     }
 
+
     public Optional<RequestAdoption> getRequestAdoptionByPet(Pet pet) {
         return Optional.ofNullable(requestAdoptionRepository.findByPet(pet));
     }
@@ -106,4 +107,32 @@ public class RequestAdoptionImpl implements RequestAdoptionService {
                 })
                 .orElse(false);
     }
+
+    public boolean aproveAdoptionStatus(UUID requestId) {
+        Optional<RequestAdoption> maybeRequestAdoption = requestAdoptionRepository.findById(requestId);
+    
+        return maybeRequestAdoption
+                .filter(adoption -> adoption.getAdoptionStatus() == AdoptionStatus.WAITING)
+                .map(requestAdoption -> {
+                    requestAdoption.setAdoptionStatus(AdoptionStatus.APPROVED);
+                    requestAdoptionRepository.save(requestAdoption);
+                    return true;
+                })
+                .orElse(false);
+    }
+    public boolean denyAdoptionStatus(UUID requestId) {
+        Optional<RequestAdoption> maybeRequestAdoption = requestAdoptionRepository.findById(requestId);
+    
+        return maybeRequestAdoption
+                .filter(adoption -> adoption.getAdoptionStatus() == AdoptionStatus.WAITING)
+                .map(requestAdoption -> {
+                    requestAdoption.setAdoptionStatus(AdoptionStatus.DENIED);
+                    requestAdoptionRepository.save(requestAdoption);
+                    return true;
+                })
+                .orElse(false);
+    }
+
 }
+
+

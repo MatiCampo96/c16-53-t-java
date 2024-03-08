@@ -39,12 +39,12 @@ public MyUserServiceImpl userServicio;
                         .loginProcessingUrl("/logincheck") //No hace falta un controlador para eso, spring security se encarga
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/inicio")
+                        .defaultSuccessUrl("/")
                         .permitAll()
                 )
                 .logout(logout ->  logout
                         .logoutUrl("/logout") //No hace falta un controlador para eso, spring security se encarga
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/")
                         .permitAll()
                 )
                 .csrf(csrf -> csrf.disable());

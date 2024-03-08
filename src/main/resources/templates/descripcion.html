@@ -53,9 +53,11 @@
                     <li><a href="refugios">Refugios</a></li>
                     <li><a href="adopcionespeciales">Adopción Especial</a></li>
                     <li><a href="sobrenosotros">Sobre Nosotros</a></li>
+                    <li><a href="solicitudes" sec:authorize="hasRole('ROLE_ADMIN')">Solitudes de adopcion</a></li>
                     <div class="botones-container">
                         <a class="ingresarheader" th:href="@{/login}" >Ingresar</a>
                         <a class="registrarseheader" th:href="@{/registrar}" >Registrarse</a>
+                        <a class="ingresarheader" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
                     </div>
                 </ul>
             </nav>

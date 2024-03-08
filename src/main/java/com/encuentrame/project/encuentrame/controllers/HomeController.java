@@ -2,7 +2,11 @@ package com.encuentrame.project.encuentrame.controllers;
 
 
 import com.encuentrame.project.encuentrame.entities.MyUser;
+import com.encuentrame.project.encuentrame.entities.RequestAdoption;
+import com.encuentrame.project.encuentrame.repositories.RequestAdoptionRepository;
 import com.encuentrame.project.encuentrame.services.MyUserServiceImpl;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,11 +17,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
+
+    @Autowired
+    private RequestAdoptionRepository requestAdoptionRepository;
 
     private final MyUserServiceImpl myUserService;
 
@@ -27,7 +35,8 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String getIndex() {
+    public String getIndex(HttpServletRequest request, Model model) {
+        model.addAttribute("httpServletRequest", request);
         return "index";
     }
 
@@ -134,5 +143,13 @@ public class HomeController {
     @GetMapping("/request")
     public String request() {
         return "request";
+    }
+
+    @GetMapping("/solicitudes")
+    public String getSolicitudes(Model model) {
+        List<RequestAdoption> requestAdoptions = requestAdoptionRepository.findAll();
+        model.addAttribute("requestAdoptions", requestAdoptions);
+
+        return "solicitudes";
     }
 }
