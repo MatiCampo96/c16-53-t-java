@@ -2,6 +2,7 @@ package com.encuentrame.project.encuentrame.controllers;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.encuentrame.project.encuentrame.entities.MyUser;
+import com.encuentrame.project.encuentrame.entities.Pet;
 import com.encuentrame.project.encuentrame.entities.RequestAdoption;
 import com.encuentrame.project.encuentrame.enumerations.HousingType;
 import com.encuentrame.project.encuentrame.repositories.MyUserRepository;
+import com.encuentrame.project.encuentrame.repositories.PetRepository;
 import com.encuentrame.project.encuentrame.repositories.RequestAdoptionRepository;
 import com.encuentrame.project.encuentrame.service.PetService;
 import com.encuentrame.project.encuentrame.services.RequestAdoptionImpl;
@@ -67,6 +70,7 @@ public class WebAdoptionController{
     @Autowired
      private UserDetailsService userDetailsService;
      private final MyUserRepository myUserRepository;
+     private final PetRepository petRepository;
 
      @Autowired
      private PetService petService;
@@ -78,8 +82,9 @@ public class WebAdoptionController{
     private RequestAdoptionRepository requestAdoptionRepository;
 
     @Autowired
-    public WebAdoptionController(RequestAdoptionRepository requestAdoptionRepository, MyUserRepository myUserRepository) {
+    public WebAdoptionController(RequestAdoptionRepository requestAdoptionRepository, MyUserRepository myUserRepository, PetRepository petRepository) {
         this.myUserRepository = myUserRepository;
+        this.petRepository = petRepository;
         this.requestAdoptionRepository = requestAdoptionRepository;
     }
 
@@ -122,8 +127,8 @@ public class WebAdoptionController{
         return "redirect:/solicitudes";
     }
 
-    @GetMapping("/request")
-    public String request(Model model) {
+    @GetMapping("/request/{petId}")
+    public String request(Model model, @PathVariable UUID petId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         String email = authentication.getName();
@@ -133,7 +138,15 @@ public class WebAdoptionController{
         model.addAttribute("name", myUser.getName());
         model.addAttribute("surname", myUser.getSurname());
         model.addAttribute("email", myUser.getEmail());
-       // model.addAttribute("myUser", myUser);
+        Optional<Pet> petOptional = petRepository.findById(petId);
+        if (petOptional.isPresent()) {
+            Pet pet = petOptional.get();
+            model.addAttribute("pet_name", pet.getPet_name());
+            model.addAttribute("pet_id", pet.getPet_id());
+        } else {
+            // Manejo de mascota no encontrada
+            // Puedes redirigir a una página de error o agregar un mensaje al modelo
+        }
         return "request";
     }
 

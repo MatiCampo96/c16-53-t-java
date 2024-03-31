@@ -47,6 +47,15 @@ public class PetController {
         model.addAttribute("Pet","Registre una mascota" );
         return ("FormCreatePet.html");
     }*/
+
+    @GetMapping("/mascotas")
+    public String getAllPets (ModelMap model) {
+        List<Pet> pets = petService.getAllPets();
+        model.addAttribute("pets", pets);
+        return "mascotas";
+    }
+    
+
     @GetMapping("/creation")
     public String createPetForm(Model model) {
         model.addAttribute("pet", new Pet());
@@ -83,7 +92,7 @@ public class PetController {
         logger.debug("The request PET is " + pet);
 
         try{
-            String uploadImagePath = storageService.uploadImageToFileSystem(file);
+            String uploadImagePath = "img/" + storageService.uploadImageToFileSystem(file);
             pet.setImage_url(uploadImagePath);
             System.out.println(pet.getImage_url());
             Pet createdPet = petService.createPet(pet);
@@ -99,15 +108,6 @@ public class PetController {
         }
     }
 
-    @GetMapping("/listarMascota")
-    public String getAllPets (ModelMap model){
-
-        //Usando ModelMap podemos establecer el listado de mascotas.
-        List<Pet> pets = petService.getAllPets();
-        //Se debe anclar para ser enviado a la interfaz del usuario
-        model.addAttribute("Mascotas", pets);
-        return "descripcion.html"; //Pendiente de crear Thymeleaf
-    }
     @GetMapping("/descripcionmascotas")
     public String displayDescription (ModelMap model){
 

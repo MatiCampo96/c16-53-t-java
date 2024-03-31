@@ -38,6 +38,9 @@ Correji el asunto de la creacion de imagen y mascota, falta manejar sus continge
 Funciona el login, 
 para crear un admin se puede actualizar por mail a un usuario en workbenc
 funciona la lista de solicitudes, las solicitudes que hay hasta el momento las cree por postman, la lista en el nav solo se le renderizal al admin. No estan tocados los permisos. Aun no esta completo el RequestMascota para el front, lo mas probable es que termine por desplegar un select para elegir mascotas de la base de datos
+
+Hay una pagina de mascotas que es capaz de desplegar algunos atributos de las mismas y su imagen.
+Estoy trabajando en recortar la imagen que se va a subir con Cropper JS (https://www.youtube.com/watch?v=xS2VrknVfzE), una vez que pueda estandarizar el tamaño de la imagen, continuare con el sitio de despliegue de mascotas. 
 ```
 
 
