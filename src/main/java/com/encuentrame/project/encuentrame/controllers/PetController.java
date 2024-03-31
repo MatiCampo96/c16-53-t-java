@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -55,7 +56,7 @@ public class PetController {
         return "mascotas";
     }
     
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/creation")
     public String createPetForm(Model model) {
         model.addAttribute("pet", new Pet());
@@ -85,6 +86,7 @@ public class PetController {
     }
 
     @PostMapping("/createAnimal")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createPet(Model model, @ModelAttribute("pet") Pet pet, @RequestParam("image") MultipartFile file) {
 
 
@@ -92,7 +94,7 @@ public class PetController {
         logger.debug("The request PET is " + pet);
 
         try{
-            String uploadImagePath = "img/" + storageService.uploadImageToFileSystem(file);
+            String uploadImagePath = "img/pets/" + storageService.uploadImageToFileSystem(file);
             pet.setImage_url(uploadImagePath);
             System.out.println(pet.getImage_url());
             Pet createdPet = petService.createPet(pet);

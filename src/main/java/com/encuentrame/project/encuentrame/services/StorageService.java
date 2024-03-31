@@ -31,7 +31,7 @@ public class StorageService {
     private final Lock lock = new ReentrantLock();
 
 
-    private String uploadFolderPath = System.getProperty("user.dir") + "/src/main/resources/static/img/";
+    private String uploadFolderPath = System.getProperty("user.dir") + "/src/main/resources/static/img/pets/";
 
     public String uploadImage(MultipartFile file) throws IOException {
         try {

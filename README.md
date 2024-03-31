@@ -41,6 +41,11 @@ funciona la lista de solicitudes, las solicitudes que hay hasta el momento las c
 
 Hay una pagina de mascotas que es capaz de desplegar algunos atributos de las mismas y su imagen.
 Estoy trabajando en recortar la imagen que se va a subir con Cropper JS (https://www.youtube.com/watch?v=xS2VrknVfzE), una vez que pueda estandarizar el tamaño de la imagen, continuare con el sitio de despliegue de mascotas. 
+
+Dejo el standarizado de las imagenes y logica de front para otro momento, ya avance con la logica de despliegue de mascotas en frontend y solicitud de adopcion, tengo que modificar el acceso a los endpoints y la pagina de error para los usuarios.
+Tendre que limpiar la carpeta de statics y dirigir las imagenes hacia img/pets. Tengo que preparar scripts para objetos de prueba para una base limpia
+
+Funciona todo aunque es facil de romper, y faltan todas las restricciones de seguridad. Seguir con springSecurity. Listo el python para insertar datos de prueba
 ```
 
 

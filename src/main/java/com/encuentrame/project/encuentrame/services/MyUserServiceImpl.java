@@ -44,8 +44,13 @@ public class MyUserServiceImpl implements UserDetailsService {
         //Usando el encoder.
         myUser.setPassword(new BCryptPasswordEncoder().encode(password)); //Eso se ve en el workbench.SELECT * FROM biblioteca.user;
 
-        myUser.setRole(UserRole.USER);
-
+        List<MyUser> existingUsers = myUserRepository.findAll();
+        if (existingUsers == null || existingUsers.isEmpty()) {
+            myUser.setRole(UserRole.ADMIN);
+        } else {
+            myUser.setRole(UserRole.USER);
+        }
+        
         myUserRepository.save(myUser);
 
     }

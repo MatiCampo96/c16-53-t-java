@@ -42,9 +42,14 @@ def add_user(name, surname, email, birthdate, password, password2):
 
 if __name__ == "__main__":
     # Agregar usuarios de ejemplo
+    print("Agregando usuarios...")
     users = [
+        {"name": "Admin", "surname": "Istrador", "email": "admin@example.com", "birthdate": "1990-01-01", "password": "admin123", "password2": "admin123"},
+        {"name": "María", "surname": "González", "email": "maria@example.com", "birthdate": "1985-05-05", "password": "password456", "password2": "password456"},
         {"name": "Juan", "surname": "Pérez", "email": "juan@example.com", "birthdate": "1990-01-01", "password": "password123", "password2": "password123"},
-        {"name": "María", "surname": "González", "email": "maria@example.com", "birthdate": "1985-05-05", "password": "password456", "password2": "password456"}
+        {"name": "Julieta", "surname": "Garcia", "email": "Julieta@example.com", "birthdate": "1985-05-05", "password": "password456", "password2": "password456"},
+        {"name": "Cholo", "surname": "Martinez", "email": "cholo@example.com", "birthdate": "1990-01-01", "password": "password123", "password2": "password123"}
+
     ]
     for user in users:
         add_user(**user)

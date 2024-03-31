@@ -26,7 +26,7 @@ public class RequestAdoption {
     @JoinColumn(name = "user_id")
     private MyUser myUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "pet_id")
     private Pet pet;
 
