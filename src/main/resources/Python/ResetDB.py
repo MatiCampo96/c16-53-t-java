@@ -3,9 +3,10 @@ import mysql.connector
 
 # Configuración de la conexión a la base de datos
 host = "localhost"
-user = "root"
-password = "123456"
+user = os.getenv('MYSQL_DB_USERNAME')
+password = os.getenv('MYSQL_DB_PASSWORD')
 database_name = "rescatame"
+
 
 # Lista de tablas en el orden en que se deben limpiar
 tables_to_truncate = [

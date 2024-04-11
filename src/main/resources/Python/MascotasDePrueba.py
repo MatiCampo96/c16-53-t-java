@@ -1,10 +1,11 @@
+import os
 import requests
 import pymysql
 
 # Datos de conexión a la base de datos
 DB_HOST = 'localhost'
-DB_USER = 'root'
-DB_PASSWORD = '123456'
+DB_USER = os.getenv('MYSQL_DB_USERNAME')
+DB_PASSWORD = os.getenv('MYSQL_DB_PASSWORD')
 DB_NAME = 'rescatame'
 
 # Función para probar la conexión a la base de datos
