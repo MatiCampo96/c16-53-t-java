@@ -77,7 +77,7 @@ def delete_files_in_directory(directory):
         print(f"Error al eliminar archivos en el directorio {directory}: {error}")
 
 # Configuración del directorio a limpiar
-directory_to_clean = "/home/matiasj/Documentos/No Country!/encuentrame/src/main/resources/static/img/pets"
+directory_to_clean = os.path.abspath(os.path.join(os.path.dirname(__file__), "../static/img/pets"))
 
-# Llamada a la función para eliminar archivos en el directorio
+# Llamada a la función para eliminar archivos en el directorios
 delete_files_in_directory(directory_to_clean)
