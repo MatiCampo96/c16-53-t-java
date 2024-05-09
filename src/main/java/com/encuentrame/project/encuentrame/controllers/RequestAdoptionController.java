@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -89,6 +90,7 @@ public class WebAdoptionController{
     }
 
     @GetMapping("/solicitudes")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getSolicitudes(Model model) {
         List<RequestAdoption> requestAdoptions = requestAdoptionRepository.findAll();
         model.addAttribute("requestAdoptions", requestAdoptions);
@@ -97,6 +99,7 @@ public class WebAdoptionController{
     }
 
     @PostMapping("/solicitudes/deny")
+    @PreAuthorize("hasRole('ADMIN')")
     public String denyAdoption(@RequestParam UUID requestId, Model model) {
         boolean operationResult = requestAdoptionServiceImpl.denyAdoptionStatus(requestId);
 
@@ -112,6 +115,7 @@ public class WebAdoptionController{
         return "redirect:/solicitudes";
     }
     @PostMapping("/solicitudes/aprove")
+    @PreAuthorize("hasRole('ADMIN')")
     public String aproveAdoption(@RequestParam UUID requestId, Model model) {
         boolean operationResult = requestAdoptionServiceImpl.aproveAdoptionStatus(requestId);
 
@@ -128,6 +132,7 @@ public class WebAdoptionController{
     }
 
     @GetMapping("/request/{petId}")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     public String request(Model model, @PathVariable UUID petId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -151,6 +156,8 @@ public class WebAdoptionController{
     }
 
     @PostMapping("/request")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+
     public String createRequestAdoption(
             @RequestParam("user_id") UUID userId,
             @RequestParam("pet_id") UUID petId,

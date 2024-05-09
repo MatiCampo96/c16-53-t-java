@@ -56,8 +56,8 @@ public class PetController {
         return "mascotas";
     }
     
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/creation")
+    @PreAuthorize("hasRole('ADMIN')")
     public String createPetForm(Model model) {
         model.addAttribute("pet", new Pet());
         return "FormCreatePet.html";
